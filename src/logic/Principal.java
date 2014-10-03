@@ -115,6 +115,7 @@ public class Principal {
         
         
     }
+    
     public boolean validarHorizontal( ) throws IOException{
         columna=0;
         fila=0;
@@ -139,11 +140,28 @@ public class Principal {
                         ultLet=Integer.toString(fila)+Integer.toString(columna);
                         posPal=priLet+ultLet;
                         System.out.print(posPal);
-                        _posPalabras.insertHead(posPal);  
-                        _tmpmov=_tmpmov.getNext();
-                        fila+=1;
-                        ultLet="";
-                        priLet="";
+                        if (_posPalabras.buscar(posPal)==true){
+                            _tmpmov=_tmpmov.getNext();
+                            fila+=1;
+                            ultLet="";
+                            priLet="";
+                            _tmpPalabra="";
+                        }
+                        else{
+                            
+                            _posPalabras.insertHead(posPal);
+                            _tmpmov=_tmpmov.getNext();
+                            puntuacion();
+                            fila+=1;
+                            ultLet="";
+                            priLet="";
+                            _tmpPalabra="";
+                            
+                        }
+                            
+                          
+                        
+                        
                     }
                     else {
                         cond= false;
@@ -171,8 +189,49 @@ public class Principal {
             }
             else {
                 System.out.print("7");
+                if (_tmpPalabra==""){
                 columna=0;
                 fila+=1;
+                ultLet="";
+                priLet="";
+                _tmpPalabra="";
+                }
+                else{
+                    if (leer(_tmpPalabra)==true){
+                        System.out.print("3");
+                        ultLet=Integer.toString(fila)+Integer.toString(columna);
+                        posPal=priLet+ultLet;
+                        System.out.print(posPal);
+                        _posPalabras.insertHead(posPal);
+                        if (_posPalabras.buscar(posPal)==true){
+                            _tmpmov=_tmpmov.getNext();
+                            fila+=1;
+                            columna=0;
+                            ultLet="";
+                            priLet="";
+                            _tmpPalabra="";
+                        }
+                        else{
+                            
+                            _posPalabras.insertHead(posPal);
+                            _tmpmov=_tmpmov.getNext();
+                            puntuacion();
+                            fila+=1;
+                            columna=0;
+                            ultLet="";
+                            priLet="";
+                            _tmpPalabra="";
+                            
+                        }
+                               
+                    }
+                    else{
+                        cond=false;
+                        System.out.print("99");
+                        System.out.print(cond);
+                        return cond;
+                    }
+                }
             }
         }
         System.out.print("9");
@@ -235,9 +294,11 @@ public class Principal {
             else {
                 System.out.print("7");
                 columna+=1;
-                columna=0;
+                fila=0;
                 priLet="";
                 ultLet="";
+                _tmpPalabra="";
+                
             }
         }
         System.out.print("9");
