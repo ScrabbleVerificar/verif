@@ -29,7 +29,7 @@ public class Principal {
     private String posPal ="";
     private int priLet=0;
     private int ultLet=0;
-    private boolean cond = true;
+    private boolean cond;
     
     public Principal() throws IOException {
         this._letras = new ListaLetras().letras();
@@ -59,8 +59,7 @@ public class Principal {
         _tmpmov = _MatrizLista.getHead();
         validarPalabra();
         
-        
-    
+
     }
     public void ingresaMatriz(){
         Nodo tmp= _MatrizLista.getHead();
@@ -73,7 +72,8 @@ public class Principal {
         _MatrizLista.setData(tmp,"j");
         tmp=tmp.getNext();
         _MatrizLista.setData(tmp,"a");
-    }  
+    } 
+    
     public void seleccionarPalabras() throws IOException{
         Nodo tmpl=_letras.getHead();// tmpLetras: Nodo que optiene la cabeza del la lista _letras para recorrerla
         Nodo tmpp=_coordenadas.getHead();// tmpPosiciones: Nodo obtiene la cabeza de la lista _coordenadas
@@ -108,6 +108,7 @@ public class Principal {
         }
         return l;  
     }
+    
     public void validarPalabra() throws IOException{
         validarHorizontal();
         
@@ -115,6 +116,9 @@ public class Principal {
         
     }
     public boolean validarHorizontal( ) throws IOException{
+        columna=0;
+        fila=0;
+        cond=true;
         while (columna<15  && cond==true){
             if (fila<15){
                 if (_MatrizLista.getData(_tmpmov).equals("") && _tmpPalabra.equals("")){
@@ -122,15 +126,15 @@ public class Principal {
                     _tmpmov=_tmpmov.getNext();
                     fila+=1;
                 }
-                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()==1) ){
+                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()==1) && fila<15){
                     System.out.print("2");
                     _tmpPalabra="";
                     _tmpmov=_tmpmov.getNext();
                     fila+=1;
                 }
-                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()>1)){
+                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()>1) && fila<15){
                     System.out.print("ENTRE");
-                    if (leer(_tmpPalabra)){
+                    if (leer(_tmpPalabra)==true){
                         System.out.print("3");
                         ultLet=fila;
                         posPal=Integer.toString(priLet)+Integer.toString(ultLet);
@@ -146,7 +150,7 @@ public class Principal {
                         break;  
                     }
                 }
-                else if (!_MatrizLista.getData(_tmpmov).equals("")){
+                else if ((!_MatrizLista.getData(_tmpmov).equals(""))&& fila<15){
                     if (priLet==0){
                         System.out.print("5");
                         _tmpPalabra+=_MatrizLista.getData(_tmpmov);
@@ -174,94 +178,82 @@ public class Principal {
         System.out.print(cond);
         return cond;  
     }
-        
-    
-    /*public boolean validarHorizontal( ) throws IOException{
-        
-        for (int i=0; i<225;i++){
-            while (columna<15  && cond==true){
-                if (fila<15){
-                    if (_MatrizLista.getData(_tmpmov).equals("") && _tmpPalabra.equals("")){
-                        System.out.print("1");
+       
+    public boolean validarVertical() throws IOException{
+        cond=true;
+        columna=0;
+        fila=0;
+        while (fila<15 && cond==true){
+            if (columna==15){
+                fila+=1;
+                columna=0;
+            }
+            else{
+                if (_MatrizLista.getData(_tmpmov).equals("") && _tmpPalabra.equals("")){
+                    columna+=1;
+                    _tmpmov=_tmpmov.getNext();
+                }
+                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()==1)&&columna<15 ){
+                    System.out.print("2");
+                    _tmpPalabra="";
+                    cond=false;
+                    priLet=0;
+                    break;
+                }
+                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()>1)&&columna<15){
+                    System.out.print("ENTRE");
+                    if (leer(_tmpPalabra)==true){
+                        System.out.print("3");
+                        ultLet=columna;
+                        posPal=Integer.toString(priLet)+Integer.toString(ultLet);
+                        System.out.print(posPal);
+                        _posPalabras.insertHead(posPal);  
                         _tmpmov=_tmpmov.getNext();
-                        fila+=1;
-                                               
+                        columna+=1;
+                        ultLet=0;
+                        priLet=0;
                     }
-                    else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()==1) ){
-                        System.out.print("2");
-                        _tmpPalabra="";
+                    else {
+                        System.out.print("4");
+                        cond=false;
+                        break;
+                    }
+                }
+                else if ((!_MatrizLista.getData(_tmpmov).equals(""))&&columna<15){
+                    if (priLet==0){
+                        System.out.print("5");
+                        _tmpPalabra+=_MatrizLista.getData(_tmpmov);
+                        System.out.print(_tmpPalabra);
                         _tmpmov=_tmpmov.getNext();
-                        fila+=1;
-                                               
+                        priLet=columna;
+                        columna+=1;
                     }
-                    else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()>1)){
-                        
-                        System.out.print("ENTRE");
-                        if (leer(_tmpPalabra)){
-                            System.out.print("3");
-                            ultLet=fila;
-                            posPal=Integer.toString(priLet)+Integer.toString(ultLet);
-                            System.out.print(posPal);
-                            _posPalabras.insertHead(posPal);                     
-                            _tmpmov=_tmpmov.getNext();
-                            fila+=1;
-                            ultLet=0;
-                            
-                                                        
-                        }
-                        else {
-                            cond= false;
-                            System.out.print("4");
-                            break;                           
-                            
-                        }
-                                
-                                                
-                    }
-                    else if (!_MatrizLista.getData(_tmpmov).equals("")){
-                        if (priLet==0){  
-                            System.out.print("5");
-                            _tmpPalabra+=_MatrizLista.getData(_tmpmov);
-                            System.out.print(_tmpPalabra);
-                            _tmpmov=_tmpmov.getNext();
-                            priLet=fila;
-                            fila+=1;
-                            
-                        }
-                        else{
-                            System.out.print("6");
-                            _tmpPalabra+=_MatrizLista.getData(_tmpmov);
-                            System.out.print(_tmpPalabra);
-                            _tmpmov=_tmpmov.getNext();
-                            fila+=1;
-                              
-                        }
+                    else{
+                        System.out.print("6");
+                        _tmpPalabra+=_MatrizLista.getData(_tmpmov);
+                        System.out.print(_tmpPalabra);
+                        _tmpmov=_tmpmov.getNext();
+                        columna+=1;
                     }
                 }
                 else {
                     System.out.print("7");
-                    fila=0;
-                    columna+=1;
+                    fila+=1;
+                    columna=0;
                 }
-                }
-            
             }
+          
+        }
         System.out.print("9");
         System.out.print(cond);
         return cond;
     }
-    public boolean validarvertical(){
-        while (fila<15){
-            if (columna=
-        }
-        
     
-    }*/
     public boolean leer(String palabra) throws IOException{
         System.out.print(palabra);
         ListaDiccionario ld= new ListaDiccionario();
         Lista lds = ld.agregarTxt();
-        return lds.buscar("abeja");
+        return lds.buscar(palabra);
     }
     
 }
