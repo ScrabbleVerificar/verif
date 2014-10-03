@@ -27,8 +27,8 @@ public class Principal {
     private int columna=0;
     private int fila = 0;
     private String posPal ="";
-    private int priLet=0;
-    private int ultLet=0;
+    private String priLet="";
+    private String ultLet="";
     private boolean cond;
     
     public Principal() throws IOException {
@@ -119,30 +119,31 @@ public class Principal {
         columna=0;
         fila=0;
         cond=true;
-        while (columna<15  && cond==true){
-            if (fila<15){
+        while (fila<15  && cond==true){
+            if (columna<15){
                 if (_MatrizLista.getData(_tmpmov).equals("") && _tmpPalabra.equals("")){
                     System.out.print("1");
                     _tmpmov=_tmpmov.getNext();
-                    fila+=1;
+                    columna+=1;
                 }
-                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()==1) && fila<15){
+                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()==1) && columna<15){
                     System.out.print("2");
                     _tmpPalabra="";
                     _tmpmov=_tmpmov.getNext();
-                    fila+=1;
+                    columna+=1;
                 }
-                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()>1) && fila<15){
+                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()>1) && columna<15){
                     System.out.print("ENTRE");
                     if (leer(_tmpPalabra)==true){
                         System.out.print("3");
-                        ultLet=fila;
-                        posPal=Integer.toString(priLet)+Integer.toString(ultLet);
+                        ultLet=Integer.toString(fila)+Integer.toString(columna);
+                        posPal=priLet+ultLet;
                         System.out.print(posPal);
                         _posPalabras.insertHead(posPal);  
                         _tmpmov=_tmpmov.getNext();
                         fila+=1;
-                        ultLet=0;      
+                        ultLet="";
+                        priLet="";
                     }
                     else {
                         cond= false;
@@ -150,28 +151,28 @@ public class Principal {
                         break;  
                     }
                 }
-                else if ((!_MatrizLista.getData(_tmpmov).equals(""))&& fila<15){
-                    if (priLet==0){
+                else if ((!_MatrizLista.getData(_tmpmov).equals(""))&& columna<15){
+                    if (priLet==""){
                         System.out.print("5");
                         _tmpPalabra+=_MatrizLista.getData(_tmpmov);
                         System.out.print(_tmpPalabra);
                         _tmpmov=_tmpmov.getNext();
-                        priLet=fila;
-                        fila+=1;
+                        priLet=Integer.toString(fila)+Integer.toString(columna);
+                        columna+=1;
                     }
                     else{
                         System.out.print("6");
                         _tmpPalabra+=_MatrizLista.getData(_tmpmov);
                         System.out.print(_tmpPalabra);
                         _tmpmov=_tmpmov.getNext();
-                        fila+=1;
+                        columna+=1;
                     }
                 }
             }
             else {
                 System.out.print("7");
-                fila=0;
-                columna+=1;
+                columna=0;
+                fila+=1;
             }
         }
         System.out.print("9");
@@ -183,66 +184,61 @@ public class Principal {
         cond=true;
         columna=0;
         fila=0;
-        while (fila<15 && cond==true){
-            if (columna==15){
+        while (columna<15 && cond==true){
+            if (_MatrizLista.getData(_tmpmov).equals("") && _tmpPalabra.equals("")){
                 fila+=1;
-                columna=0;
+                _tmpmov=_tmpmov.getNext();
             }
-            else{
-                if (_MatrizLista.getData(_tmpmov).equals("") && _tmpPalabra.equals("")){
-                    columna+=1;
+            else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()==1)&&fila<15 ){
+                System.out.print("2");
+                _tmpPalabra="";
+                priLet="";
+                cond=false;
+                break;
+            }
+            else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()>1)&&fila<15){
+                System.out.print("ENTRE");
+                if (leer(_tmpPalabra)==true){
+                    System.out.print("3");
+                    ultLet=Integer.toString(columna)+Integer.toString(fila);
+                    posPal=priLet+ultLet;
+                    System.out.print(posPal);
+                    _posPalabras.insertHead(posPal);
                     _tmpmov=_tmpmov.getNext();
-                }
-                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()==1)&&columna<15 ){
-                    System.out.print("2");
-                    _tmpPalabra="";
-                    cond=false;
-                    priLet=0;
-                    break;
-                }
-                else if (_MatrizLista.getData(_tmpmov).equals("") && (_tmpPalabra.length()>1)&&columna<15){
-                    System.out.print("ENTRE");
-                    if (leer(_tmpPalabra)==true){
-                        System.out.print("3");
-                        ultLet=columna;
-                        posPal=Integer.toString(priLet)+Integer.toString(ultLet);
-                        System.out.print(posPal);
-                        _posPalabras.insertHead(posPal);  
-                        _tmpmov=_tmpmov.getNext();
-                        columna+=1;
-                        ultLet=0;
-                        priLet=0;
-                    }
-                    else {
-                        System.out.print("4");
-                        cond=false;
-                        break;
-                    }
-                }
-                else if ((!_MatrizLista.getData(_tmpmov).equals(""))&&columna<15){
-                    if (priLet==0){
-                        System.out.print("5");
-                        _tmpPalabra+=_MatrizLista.getData(_tmpmov);
-                        System.out.print(_tmpPalabra);
-                        _tmpmov=_tmpmov.getNext();
-                        priLet=columna;
-                        columna+=1;
-                    }
-                    else{
-                        System.out.print("6");
-                        _tmpPalabra+=_MatrizLista.getData(_tmpmov);
-                        System.out.print(_tmpPalabra);
-                        _tmpmov=_tmpmov.getNext();
-                        columna+=1;
-                    }
+                    columna+=1;
+                    ultLet="";
+                    priLet="";
                 }
                 else {
-                    System.out.print("7");
-                    fila+=1;
-                    columna=0;
+                    System.out.print("4");
+                    cond=false;
+                    break;
                 }
             }
-          
+            else if ((!_MatrizLista.getData(_tmpmov).equals(""))&&fila<15){
+                if (priLet==""){
+                    System.out.print("5");
+                    _tmpPalabra+=_MatrizLista.getData(_tmpmov);
+                    System.out.print(_tmpPalabra);
+                    _tmpmov=_tmpmov.getNext();
+                    priLet=Integer.toString(columna)+Integer.toString(fila);
+                    columna+=1;
+                }
+                else{
+                    System.out.print("6");
+                    _tmpPalabra+=_MatrizLista.getData(_tmpmov);
+                    System.out.print(_tmpPalabra);
+                    _tmpmov=_tmpmov.getNext();
+                    fila+=1;
+                }
+            }
+            else {
+                System.out.print("7");
+                columna+=1;
+                columna=0;
+                priLet="";
+                ultLet="";
+            }
         }
         System.out.print("9");
         System.out.print(cond);
